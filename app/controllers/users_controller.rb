@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :redirect_if_user_logined, except: :show
 
   def show
+    @slides
     @user = User.find params[:id]
 
     if current_user && current_user == @user
@@ -9,6 +10,8 @@ class UsersController < ApplicationController
     else
       @slides = @user.slides.order(created_at: :desc).page(params[:page])
     end
+
+    @haveSlide = @slides.empty? ? "#{ @user.name }暂没分享任何讲稿" : "#{ @user.name }的讲稿"
   end
 
   def new
